@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RIUPP.Models{
-    public class Area{
+namespace RIUPP.Models
+{
+    public class Autenticacao
+    {
         [Key]
         public int id { get; set; }
-        public String nome { get; set; }
-        public String designacao { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
     }
 }
