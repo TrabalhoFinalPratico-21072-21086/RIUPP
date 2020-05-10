@@ -11,5 +11,10 @@ namespace RIUPP.Models{
         public int id { get; set; }
         public String nome { get; set; }
         public String designacao { get; set; }
+
+        public virtual ICollection<Ficheiro> Ficheiro { get; set; }
+        public Area(){
+            Ficheiro = new HashSet<Ficheiro>();
+        }
     }
 }

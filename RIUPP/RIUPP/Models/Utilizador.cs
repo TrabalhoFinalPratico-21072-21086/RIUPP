@@ -14,6 +14,16 @@ namespace RIUPP.Models{
         public Autenticacao autenticacao { get; set; }
         public String userName { get; set; }
         public String foto { get; set; }
-        
+
+        public virtual ICollection<Ficheiro> Ficheiro { get; set; }
+        public virtual ICollection<Download> Download { get; set; }
+        public virtual ICollection<Comentario> Comentario{ get; set; }
+
+        public Utilizador(){
+            Ficheiro = new HashSet<Ficheiro>();
+            Download = new HashSet<Download>();
+            Comentario = new HashSet<Comentario>();
+        }
+
     }
 }

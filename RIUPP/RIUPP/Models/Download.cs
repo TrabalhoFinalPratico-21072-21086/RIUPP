@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RIUPP.Models
-{
+namespace RIUPP.Models{
     public class Download{
-
         [Key]
         public int id { get; set; }
         public DateTime data { get; set; }
@@ -20,5 +18,6 @@ namespace RIUPP.Models
         [ForeignKey(nameof(utilizador))]
         public int utilizadorFK { get; set; }
         public Utilizador utilizador { get; set; }
+
     }
 }

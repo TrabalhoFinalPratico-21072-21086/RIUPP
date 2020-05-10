@@ -13,5 +13,13 @@ namespace RIUPP.Models{
         public String comentario { get; set; }
         public String visivel { get; set; }
         public DateTime date { get; set; }
+
+        [ForeignKey(nameof(ficheiro))]
+        public int ficheiroFK { get; set; }
+        public Ficheiro ficheiro { get; set; }
+
+        [ForeignKey(nameof(utilizador))]
+        public int utilizadorFK { get; set; }
+        public Utilizador utilizador { get; set; }
     }
 }
