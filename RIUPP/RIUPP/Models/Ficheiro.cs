@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 namespace RIUPP.Models{
     public class Ficheiro{
         [Key]
-        public int id { get; set; }
-        public String titulo { get; set; }
-        public String descricao { get; set; }
-        public String observacao { get; set; }
-        public String local { get; set; }// sitio onde o ficheiro esta guardado(directoria)
-        public String tipo { get; set; }//tipo de ficheiro ex: pdf, zip, jpg
-        public DateTime dateupload { get; set; }
+        public int Id { get; set; }
+        public String Titulo { get; set; }
+        public String Descricao { get; set; }
+        public String Observacao { get; set; }
+        public String Local { get; set; }// sitio onde o ficheiro esta guardado(directoria)
+        public String Tipo { get; set; }//tipo de ficheiro ex: pdf, zip, jpg
+        public DateTime DateUpload { get; set; }
 
 
-        [ForeignKey(nameof(dono))]
-        public int donoFK { get; set; }
-        public Utilizador dono { get; set; }
+        [ForeignKey(nameof(Dono))]
+        public int DonoFK { get; set; }
+        public Utilizador Dono { get; set; }
 
-        [ForeignKey(nameof(area))]
-        public int areaFK { get; set; }
-        public Utilizador area { get; set; }
+        [ForeignKey(nameof(Area))]
+        public int AreaFK { get; set; }
+        public Area Area { get; set; }
 
         public virtual ICollection<Download> Download { get; set; }
         public virtual ICollection<Comentario> Comentario { get; set; }

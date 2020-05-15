@@ -9,8 +9,8 @@ namespace RIUPP.Models
     public class Autenticacao
     {
         [Key]
-        public int id { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

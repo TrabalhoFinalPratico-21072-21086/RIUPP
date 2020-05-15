@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 namespace RIUPP.Models{
     public class Download{
         [Key]
-        public int id { get; set; }
-        public DateTime data { get; set; }
+        public int Id { get; set; }
+        public DateTime Data { get; set; }
 
-        [ForeignKey(nameof(ficheiro))]
-        public int ficheiroFK { get; set; }
-        public Ficheiro ficheiro { get; set; }
+        [ForeignKey(nameof(Ficheiro))]
+        public int FicheiroFK { get; set; }
+        public Ficheiro Ficheiro { get; set; }
 
-        [ForeignKey(nameof(utilizador))]
-        public int utilizadorFK { get; set; }
-        public Utilizador utilizador { get; set; }
+        [ForeignKey(nameof(Utilizador))]
+        public int UtilizadorFK { get; set; }
+        public Utilizador Utilizador { get; set; }
 
     }
 }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace RIUPP.Models{
     public class Area{
         [Key]
-        public int id { get; set; }
-        public String nome { get; set; }
-        public String designacao { get; set; }
+        public int Id { get; set; }
+        public String Nome { get; set; }
+        public String Designacao { get; set; }
 
         public virtual ICollection<Ficheiro> Ficheiro { get; set; }
         public Area(){

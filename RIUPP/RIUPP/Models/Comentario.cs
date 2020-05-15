@@ -9,17 +9,16 @@ namespace RIUPP.Models{
     public class Comentario{
 
         [Key]
-        public int id { get; set; }
-        public String comentario { get; set; }
-        public String visivel { get; set; }
-        public DateTime date { get; set; }
+        public int Id { get; set; }
+        public String Coment { get; set; }
+        public String Visivel { get; set; }
+        public DateTime Date { get; set; }
 
-        [ForeignKey(nameof(ficheiro))]
-        public int ficheiroFK { get; set; }
-        public Ficheiro ficheiro { get; set; }
+        public int UtilizadorFK { get; set; }
 
-        [ForeignKey(nameof(utilizador))]
-        public int utilizadorFK { get; set; }
-        public Utilizador utilizador { get; set; }
+        [ForeignKey(nameof(Ficheiro))]
+        public int FicheiroFK { get; set; }
+        public Ficheiro Ficheiro { get; set; }
+        
     }
 }
