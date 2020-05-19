@@ -15,11 +15,9 @@ namespace RIUPP.Models{
         public String UserName { get; set; }
         public String Foto { get; set; }
 
-        public virtual ICollection<Ficheiro> Ficheiro { get; set; }
         public virtual ICollection<Download> Download { get; set; }
 
         public Utilizador(){
-            Ficheiro = new HashSet<Ficheiro>();
             Download = new HashSet<Download>();
         }
 

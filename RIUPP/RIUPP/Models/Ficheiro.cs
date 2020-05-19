@@ -16,10 +16,7 @@ namespace RIUPP.Models{
         public String Tipo { get; set; }//tipo de ficheiro ex: pdf, zip, jpg
         public DateTime DateUpload { get; set; }
 
-
-        [ForeignKey(nameof(Dono))]
         public int DonoFK { get; set; }
-        public Utilizador Dono { get; set; }
 
         [ForeignKey(nameof(Area))]
         public int AreaFK { get; set; }
