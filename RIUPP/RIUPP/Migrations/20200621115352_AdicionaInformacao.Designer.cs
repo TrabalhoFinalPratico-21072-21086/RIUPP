@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RIUPP.Data;
 
 namespace RIUPP.Migrations
 {
     [DbContext(typeof(RIUPPDB))]
-    partial class RIUPPDBModelSnapshot : ModelSnapshot
+    [Migration("20200621115352_AdicionaInformacao")]
+    partial class AdicionaInformacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,43 +178,6 @@ namespace RIUPP.Migrations
                     b.HasIndex("UtilizadorFK");
 
                     b.ToTable("Downloads");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Data = new DateTime(2020, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FicheiroFK = 1,
-                            UtilizadorFK = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Data = new DateTime(2020, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FicheiroFK = 2,
-                            UtilizadorFK = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Data = new DateTime(2020, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FicheiroFK = 2,
-                            UtilizadorFK = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Data = new DateTime(2020, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FicheiroFK = 1,
-                            UtilizadorFK = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Data = new DateTime(2020, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FicheiroFK = 3,
-                            UtilizadorFK = 3
-                        });
                 });
 
             modelBuilder.Entity("RIUPP.Models.Ficheiro", b =>

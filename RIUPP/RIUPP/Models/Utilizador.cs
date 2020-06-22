@@ -9,16 +9,16 @@ namespace RIUPP.Models{
     public class Utilizador{
         [Key]
         public int Id { get; set; }
-        /*[Key][ForeignKey(nameof(autenticacao))]
-        public int autenticacaoFK { get; set; }
-        public Autenticacao autenticacao { get; set; }*/
-        public String UserName { get; set; }
+        public String Nome { get; set; }
+        public String Email { get; set; }
         public String Foto { get; set; }
 
         public virtual ICollection<Download> Download { get; set; }
+        public virtual ICollection<Ficheiro> Ficheiro { get; set; }
 
         public Utilizador(){
             Download = new HashSet<Download>();
+            Ficheiro = new HashSet<Ficheiro>();
         }
 
     }

@@ -14,7 +14,9 @@ namespace RIUPP.Models{
         public String Visivel { get; set; }
         public DateTime Date { get; set; }
 
-        public int UtilizadorFK { get; set; }
+        [ForeignKey(nameof(Utilizador))]
+        public int QuemComentou { get; set; }
+        public Utilizador Utilizador { get; set; }
 
         [ForeignKey(nameof(Ficheiro))]
         public int FicheiroFK { get; set; }

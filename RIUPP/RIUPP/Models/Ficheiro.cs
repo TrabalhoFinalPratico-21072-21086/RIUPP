@@ -16,7 +16,9 @@ namespace RIUPP.Models{
         public String Tipo { get; set; }//tipo de ficheiro ex: pdf, zip, jpg
         public DateTime DateUpload { get; set; }
 
-        public int DonoFK { get; set; }
+        [ForeignKey(nameof(Utilizador))]
+        public int Dono { get; set; }
+        public Utilizador Utilizador { get; set; }
 
         [ForeignKey(nameof(Area))]
         public int AreaFK { get; set; }
@@ -28,7 +30,6 @@ namespace RIUPP.Models{
             Download = new HashSet<Download>();
             Comentario = new HashSet<Comentario>();
         }
-
 
     }
 }
