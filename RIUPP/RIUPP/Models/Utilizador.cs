@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,13 +13,16 @@ namespace RIUPP.Models{
         public String Nome { get; set; }
         public String Email { get; set; }
         public String Foto { get; set; }
+        public String Aut { get; set; }
 
         public virtual ICollection<Download> Download { get; set; }
         public virtual ICollection<Ficheiro> Ficheiro { get; set; }
+        public virtual ICollection<Comentario> Comentario { get; set; }
 
         public Utilizador(){
             Download = new HashSet<Download>();
             Ficheiro = new HashSet<Ficheiro>();
+            Comentario = new HashSet<Comentario>();
         }
 
     }

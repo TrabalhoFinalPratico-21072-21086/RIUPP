@@ -1,17 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RIUPP.Migrations
+namespace RIUPP.Data.Migrations
 {
-    public partial class AlteracaoDeNome : Migration
+    public partial class CriarUtilizadorQuandoRegistaTenta2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "UserName",
-                table: "Utilizadores");
-
             migrationBuilder.AddColumn<string>(
-                name: "Nome",
+                name: "Aut",
                 table: "Utilizadores",
                 nullable: true);
         }
@@ -19,14 +15,8 @@ namespace RIUPP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Nome",
+                name: "Aut",
                 table: "Utilizadores");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserName",
-                table: "Utilizadores",
-                type: "nvarchar(max)",
-                nullable: true);
         }
     }
 }
