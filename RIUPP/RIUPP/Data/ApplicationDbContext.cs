@@ -20,7 +20,7 @@ namespace RIUPP.Data{
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Utilizador>().HasData(
+            /*modelBuilder.Entity<Utilizador>().HasData(
                new Utilizador { Id = 1, Nome = "Luís Freitas", Email = "Luis@ipt.pt", Foto = "foto.png" },
                new Utilizador { Id = 2, Nome = "Andreia Gomes", Email = "Andreia@ipt.pt", Foto = "foto.png" },
                new Utilizador { Id = 3, Nome = "Cristina Sousa", Email = "Cristina@ipt.pt", Foto = "foto.png" },
@@ -62,7 +62,7 @@ namespace RIUPP.Data{
                new Download { Id = 3, Data = new DateTime(2020, 6, 6), FicheiroFK = 2, UtilizadorFK = 3 },
                new Download { Id = 4, Data = new DateTime(2020, 6, 6), FicheiroFK = 1, UtilizadorFK = 4 },
                new Download { Id = 5, Data = new DateTime(2020, 6, 6), FicheiroFK = 3, UtilizadorFK = 3 }
-            );
+            );*/
         }
     }
 }
