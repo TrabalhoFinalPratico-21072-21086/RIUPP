@@ -1,0 +1,88 @@
+﻿@model RIUPP.Models.Utilizador
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="container">
+    <br /><br /><br /><br /><br />
+    <h1>Detalhes</h1>
+
+    <div>
+        <h4>Utilizador</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Index">Voltar a lista de utilizadores</a>
+    </div>
+</div>
+<br /><br /><br />
+    <div class="container">
+        <br /><br />
+        @{if (Model.Ficheiro.Count != 0){
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Titulo
+                            </th>
+                            <th>
+                                Descrição
+                            </th>
+                            <th>
+                                Observação
+                            </th>
+                            <th>
+                                Data Upload
+                            </th>
+                            <th>
+                                Area
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Ficheiro.Reverse())
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Titulo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descricao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Observacao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateUpload)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Area.Nome)
+                                </td>
+                                <td>
+                                    <a asp-controller="Ficheiros" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else{
+                <h6>Este utilizador ainda não carregou nenhum ficheiro</h6>
+            }
+        }
+    </div>

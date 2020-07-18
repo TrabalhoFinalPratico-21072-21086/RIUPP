@@ -1,0 +1,59 @@
+﻿@model IEnumerable<RIUPP.Models.Ficheiro>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <div class="container">
+        <br /><br /><br /><br /><br />
+        <h1>Minha Página</h1>
+        <h3>Meus Ficheiros</h3>
+        <p>
+            <a asp-action="Create">Carregar um Novo Ficheiro</a>
+        </p>
+        <p>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index">Mudar Dados</a>
+        </p>
+        @{if (Model.Count() != 0){
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Título
+                            </th>
+                            <th>
+                                Descrição
+                            </th>
+                            <th>
+                                Área
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Reverse()){
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Titulo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descricao)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Area.Nome)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else{
+                <h6>Ainda não carregou nenhum ficheiro</h6>
+            }
+        }
+    </div>

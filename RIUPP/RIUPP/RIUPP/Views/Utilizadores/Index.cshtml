@@ -1,0 +1,38 @@
+﻿@model IEnumerable<RIUPP.Models.Utilizador>
+
+@{
+    ViewData["Title"] = "Index";
+}
+    <div class="container">
+        <br /><br /><br /><br /><br />
+        <h1>Outros Utilizadores</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Número de Ficheiros Carregados
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ficheiro.Count)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,52 @@
+﻿@model RIUPP.Models.Area
+
+@{
+    ViewData["Title"] = "Details";
+}
+    <div class="container">
+        <br /><br /><br /><br /><br />
+        <h1 class="display-4">@Html.DisplayFor(model => model.Nome)</h1>
+        <br/>
+        <h4>@Html.DisplayFor(model => model.Designacao)</h4>
+        <br/>
+        <a asp-action="Index">Voltar para as Áreas</a>
+        <div>
+            <br/><br/>
+            @{if (Model.Ficheiro.Count() != 0){
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Titulo
+                                </th>
+                                <th>
+                                    Descrição
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Ficheiro.Reverse())
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Titulo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Descricao)
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Ficheiros" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else{
+                    <h6>Ainda não foram carregados ficheiros para esta area</h6>
+                }
+             }
+        </div>
+    </div>

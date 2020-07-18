@@ -1,0 +1,108 @@
+﻿@model RIUPP.Models.Ficheiro
+
+@{
+    ViewData["Title"] = "Details";
+}
+    <div class="container">
+        <br /><br /><br /><br /><br />
+        <h1>Detalhes</h1>
+
+        <div>
+            <h4>Ficheiro</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Título
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Titulo)
+                </dd>
+                <dt class="col-sm-2">
+                    Descrição
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Descricao)
+                </dd>
+                <dt class="col-sm-2">
+                    Observação
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Observacao)
+                </dd>
+                <dt class="col-sm-2">
+                    Data de Upload
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateUpload)
+                </dd>
+                <dt class="col-sm-2">
+                    Área
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Area.Nome)
+                </dd>
+            </dl>
+        </div>
+        <form method="Post" asp-action="Download">
+            <input type="hidden" name="down" value="@Html.DisplayFor(model => model.Local)" />
+            <input type="hidden" name="fich" value="@Html.DisplayFor(model => model.Id)" />
+            <input type="submit" name="down" class="btn btn-outline-secondary btn-lg btn-block" value="Download" />
+        </form>
+        <br />
+        <div>
+            <a asp-action="Downloads" asp-route-id="@Model.Id">Quem Fez Download</a> |
+            <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
+            <a asp-action="Index">Voltar</a>
+        </div>
+        <br />
+
+        <form method="Post" asp-action="Comentar">
+            <div class="input-group mb-3">
+                <input type="hidden" name="fich" value=@Html.DisplayFor(model => model.Id) />
+                <input type="text" class="form-control" placeholder="Comentarios aqui" aria-label="Comentarios aqui" aria-describedby="button-addon2" name="comentario" />
+                <input type="submit" class="btn btn-outline-secondary" />
+            </div>
+        </form>
+        <br />
+
+
+        @{if (Model.Comentario.Count != 0){
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Data
+                            </th>
+                            <th>
+                                Comentário
+                            </th>
+                            <th>
+                                Quem Comentou
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Comentario.Reverse())
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Coment)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Utilizador.Nome)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h6>Este Ficheiro ainda não tem Comentarios</h6>
+            }
+        }
+    </div>

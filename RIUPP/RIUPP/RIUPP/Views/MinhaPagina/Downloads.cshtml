@@ -1,0 +1,58 @@
+﻿@model IEnumerable<RIUPP.Models.Download>
+
+@{
+    ViewData["Title"] = "Downloads";
+}
+
+    <div class="container">
+        <br /><br /><br /><br /><br />
+        <h1>Downloads</h1>
+
+        <p>
+            Numero de Downloads   @Model.Count()
+        </p>
+        <br />
+        <div>
+            <a asp-action="Index">Voltar</a>
+        </div>
+        <br />
+        @{if (Model.Count() != 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Data)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Utilizador)
+                            </th>
+                            <th>
+                                Ver Utilizador?
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Reverse())
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Data)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Utilizador.Nome)
+                                </td>
+                                <td>
+                                    <a asp-controller="Utilizadores" asp-action="Details" asp-route-id="@item.Utilizador.Id">Ver Utilizador</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h6>Ainda ninguem fez download do seu ficheiro :(</h6>
+            }
+        }
+    </div>
