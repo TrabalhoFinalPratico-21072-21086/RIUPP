@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,8 +44,7 @@ namespace RIUPP.Controllers
                 return NotFound();
             }
 
-            //return View(download);
-            return NotFound();
+            return View(download);
         }
 
         // GET: Downloads/Create
@@ -53,8 +52,7 @@ namespace RIUPP.Controllers
         {
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id");
             ViewData["UtilizadorFK"] = new SelectList(_context.Utilizadores, "Id", "Id");
-            //return View();
-            return NotFound();
+            return View();
         }
 
         // POST: Downloads/Create
@@ -73,8 +71,7 @@ namespace RIUPP.Controllers
             }
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id", download.FicheiroFK);
             ViewData["UtilizadorFK"] = new SelectList(_context.Utilizadores, "Id", "Id", download.UtilizadorFK);
-            //return View(download);
-            return NotFound();
+            return View(download);
         }
 
         // GET: Downloads/Edit/5
@@ -92,8 +89,7 @@ namespace RIUPP.Controllers
             }
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id", download.FicheiroFK);
             ViewData["UtilizadorFK"] = new SelectList(_context.Utilizadores, "Id", "Id", download.UtilizadorFK);
-            //return View(download);
-            return NotFound();
+            return View(download);
         }
 
         // POST: Downloads/Edit/5
@@ -126,8 +122,7 @@ namespace RIUPP.Controllers
                         throw;
                     }
                 }
-                //return RedirectToAction(nameof(Index));
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id", download.FicheiroFK);
             ViewData["UtilizadorFK"] = new SelectList(_context.Utilizadores, "Id", "Id", download.UtilizadorFK);
@@ -152,8 +147,7 @@ namespace RIUPP.Controllers
                 return NotFound();
             }
 
-            //return View(download);
-            return NotFound();
+            return View(download);
         }
 
         // POST: Downloads/Delete/5
@@ -164,8 +158,7 @@ namespace RIUPP.Controllers
             var download = await _context.Downloads.FindAsync(id);
             _context.Downloads.Remove(download);
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return NotFound();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool DownloadExists(int id)
@@ -174,4 +167,3 @@ namespace RIUPP.Controllers
         }
     }
 }
-*/

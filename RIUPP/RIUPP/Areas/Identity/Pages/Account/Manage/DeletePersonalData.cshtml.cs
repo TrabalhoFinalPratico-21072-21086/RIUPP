@@ -77,22 +77,28 @@ namespace RIUPP.Areas.Identity.Pages.Account.Manage
 
             var utilizador = await _context.Utilizadores.Include(u => u.Ficheiro).FirstOrDefaultAsync(m => m.Aut == user.Id);
             var ficheiros = await _context.Ficheiros.Include(f => f.Download).Include(f => f.Comentario).FirstOrDefaultAsync(f => f.Dono == utilizador.Id);
-            var comentarios = await _context.Comentarios.FirstOrDefaultAsync(c => c.FicheiroFK == ficheiros.Id || c.QuemComentou == utilizador.Id);
-            var downloads = await _context.Downloads.FirstOrDefaultAsync(d => d.FicheiroFK == ficheiros.Id || d.UtilizadorFK == utilizador.Id);
+            if (ficheiros != null)
+            {
+                var comentarios = await _context.Comentarios.FirstOrDefaultAsync(c => c.FicheiroFK == ficheiros.Id || c.QuemComentou == utilizador.Id);
+                var downloads = await _context.Downloads.FirstOrDefaultAsync(d => d.FicheiroFK == ficheiros.Id || d.UtilizadorFK == utilizador.Id);
+            
 
-            if (utilizador.Ficheiro != null){
                 foreach (var fich in utilizador.Ficheiro){
                     System.IO.File.Delete("./wwwroot/Documentos/" + fich.Local);
                 }
-            }
 
+                if (downloads != null) _context.Remove(downloads);
+                if (comentarios != null) _context.Remove(comentarios);
+            }
             if (ficheiros != null) _context.Remove(ficheiros);
-            if (downloads != null) _context.Remove(downloads);
-            if (comentarios != null) _context.Remove(comentarios);
-            if (ficheiros != null) _context.Remove(ficheiros);
+
 
             _context.Utilizadores.Remove(utilizador);
             await _context.SaveChangesAsync();
+
+            var role = await _context.UserRoles.FirstOrDefaultAsync(r => r.UserId == user.Id);
+            var nameRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == role.RoleId);
+            await _userManager.RemoveFromRoleAsync(user, nameRole.Name);
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);

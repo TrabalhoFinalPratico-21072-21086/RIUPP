@@ -86,7 +86,7 @@ namespace RIUPP.Areas.Identity.Pages.Account{
                 //caso o registo esteja correcto, é criado um utilizador na base de dados _context que a chave Aut corresponde ao User na tabela AspNetUsers
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
+                
                 if (result.Succeeded){
                     _logger.LogInformation("User created a new account with password.");
 
@@ -96,8 +96,12 @@ namespace RIUPP.Areas.Identity.Pages.Account{
                         Aut = user.Id
                     };
 
+                    await _userManager.AddToRoleAsync(user, "Anonimo");
+
                     _context.Add(util);
                     await _context.SaveChangesAsync();
+
+                    
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 

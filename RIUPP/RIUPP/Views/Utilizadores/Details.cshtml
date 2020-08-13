@@ -23,66 +23,95 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Email)
             </dd>
+            @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario"))
+            {
+                <dt class="col-sm-2">
+                    Cargo
+                </dt>
+                <dd class="col-sm-10">
+                    @ViewBag.Cargo
+                </dd>
+            }
         </dl>
     </div>
     <div>
         <a asp-action="Index">Voltar a lista de utilizadores</a>
     </div>
+    <br /><br />
+    @if (User.IsInRole("Gestor"))
+    {
+        <div class="btn-group btn-group-sm" role="group">
+            <form method="post" asp-action="mudarCargo">
+                <input type="hidden" name="idUtil" value="@Model.Id" />
+                <input type="hidden" name="crg" value="desce" />
+                <button type="submit" class="btn btn-outline-warning">Descer Cargo</button>
+            </form>
+            <form method="post" asp-action="mudarCargo">
+                <input type="hidden" name="idUtil" value="@Model.Id" />
+                <input type="hidden" name="crg" value="sobe" />
+                <button type="submit" class="btn btn-outline-warning">Subir Cargo</button>
+            </form>
+        </div>
+    }
 </div>
-<br /><br /><br />
-    <div class="container">
-        <br /><br />
-        @{if (Model.Ficheiro.Count != 0){
-                <table class="table">
-                    <thead>
+<br />
+<br />
+<br />
+<div class="container">
+    <br /><br />
+    @{if (Model.Ficheiro.Count != 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Titulo
+                        </th>
+                        <th>
+                            Descrição
+                        </th>
+                        <th>
+                            Observação
+                        </th>
+                        <th>
+                            Data Upload
+                        </th>
+                        <th>
+                            Area
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Ficheiro.Reverse())
+                    {
                         <tr>
-                            <th>
-                                Titulo
-                            </th>
-                            <th>
-                                Descrição
-                            </th>
-                            <th>
-                                Observação
-                            </th>
-                            <th>
-                                Data Upload
-                            </th>
-                            <th>
-                                Area
-                            </th>
-                            <th></th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Titulo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Descricao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Observacao)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateUpload)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Area.Nome)
+                            </td>
+                            <td>
+                                <a asp-controller="Ficheiros" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Ficheiro.Reverse())
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Titulo)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Descricao)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Observacao)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DateUpload)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Area.Nome)
-                                </td>
-                                <td>
-                                    <a asp-controller="Ficheiros" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else{
-                <h6>Este utilizador ainda não carregou nenhum ficheiro</h6>
-            }
+                    }
+                </tbody>
+            </table>
         }
-    </div>
+        else
+        {
+            <h6>Este utilizador ainda não carregou nenhum ficheiro</h6>
+        }
+    }
+</div>

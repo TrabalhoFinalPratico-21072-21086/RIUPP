@@ -298,6 +298,9 @@ namespace RIUPP.Data.Migrations
                     b.Property<int>("QuemComentou")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Visivel")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FicheiroFK");

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -54,9 +55,9 @@ namespace RIUPP.Controllers
 
                     return View(area);
                 }
-        /*
-
-                // GET: Areas/Create
+        
+                [Authorize(Roles = "Gestor")]
+                // GET: Areas/Create 
                 public IActionResult Create()
                 {
                     return View();
@@ -67,6 +68,7 @@ namespace RIUPP.Controllers
                 // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
                 [HttpPost]
                 [ValidateAntiForgeryToken]
+                [Authorize(Roles = "Gestor")]
                 public async Task<IActionResult> Create([Bind("Id,Nome,Designacao")] Area area)
                 {
                     if (ModelState.IsValid)
@@ -79,8 +81,8 @@ namespace RIUPP.Controllers
                 }
 
                 // GET: Areas/Edit/5
-                public async Task<IActionResult> Edit(int? id)
-                {
+                [Authorize(Roles = "Gestor")]
+                public async Task<IActionResult> Edit(int? id){
                     if (id == null)
                     {
                         return NotFound();
@@ -94,27 +96,24 @@ namespace RIUPP.Controllers
                     return View(area);
                 }
 
+                
                 // POST: Areas/Edit/5
                 // To protect from overposting attacks, enable the specific properties you want to bind to, for 
                 // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
                 [HttpPost]
                 [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Designacao")] Area area)
-                {
-                    if (id != area.Id)
-                    {
+                [Authorize(Roles = "Gestor")]
+                public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Designacao")] Area area){
+                    if (id != area.Id){
                         return NotFound();
                     }
 
-                    if (ModelState.IsValid)
-                    {
-                        try
-                        {
+                    if (ModelState.IsValid){
+                        try{
                             _context.Update(area);
                             await _context.SaveChangesAsync();
                         }
-                        catch (DbUpdateConcurrencyException)
-                        {
+                        catch (DbUpdateConcurrencyException){
                             if (!AreaExists(area.Id))
                             {
                                 return NotFound();
@@ -130,8 +129,8 @@ namespace RIUPP.Controllers
                 }
 
                 // GET: Areas/Delete/5
-                public async Task<IActionResult> Delete(int? id)
-                {
+                [Authorize(Roles = "Gestor")]
+                public async Task<IActionResult> Delete(int? id){
                     if (id == null)
                     {
                         return NotFound();
@@ -150,18 +149,16 @@ namespace RIUPP.Controllers
                 // POST: Areas/Delete/5
                 [HttpPost, ActionName("Delete")]
                 [ValidateAntiForgeryToken]
-                public async Task<IActionResult> DeleteConfirmed(int id)
-                {
+                [Authorize(Roles = "Gestor")]
+                public async Task<IActionResult> DeleteConfirmed(int id){
                     var area = await _context.Areas.FindAsync(id);
                     _context.Areas.Remove(area);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-                    return NotFound();
                 }
 
-                private bool AreaExists(int id)
-                {
+                private bool AreaExists(int id){
                     return _context.Areas.Any(e => e.Id == id);
-                }*/
+                }
     }
 }

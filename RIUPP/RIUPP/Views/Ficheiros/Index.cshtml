@@ -34,7 +34,9 @@
                         @Html.DisplayFor(modelItem => item.Area.Nome)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                        @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario")){<a asp-action="Edit" asp-route-id="@item.Id"> Editar |</a>}
+                        <a asp-action="Details" asp-route-id="@item.Id">  Detalhes  </a>
+                        @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario")){<a asp-action="Delete" asp-route-id="@item.Id">| Apagar </a>}
                     </td>
                 </tr>
                 }

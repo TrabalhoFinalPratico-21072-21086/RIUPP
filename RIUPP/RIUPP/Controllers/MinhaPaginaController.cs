@@ -15,10 +15,8 @@ using RIUPP.Data;
 using RIUPP.Models;
 
 
-namespace RIUPP.Controllers
-{
-    public class MinhaPaginaController : Controller
-    {
+namespace RIUPP.Controllers{
+    public class MinhaPaginaController : Controller {
         /// <summary>
         /// Variável que identifica a Base de dados do projecto
         /// </summary>
@@ -49,14 +47,14 @@ namespace RIUPP.Controllers
         where AspNetUsers.Id = Utilizadores.Aut and Ficheiros.Dono = Utilizadores.Id and Ficheiros.AreaFK = Area.Id
         */
         // GET: MinhaPagina
-        [Authorize]
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index(){
             var user = await _userManager.GetUserAsync(User);
             var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
             var rIUPPDB = _context.Ficheiros.Include(f => f.Area)
                                              .Include(f => f.Utilizador)
                                              .Where(f => f.Dono == util.Id);
+            ViewBag.username = util.Nome;
+            ViewBag.email = util.Email;
             return View(await rIUPPDB.ToListAsync());
         }
 
@@ -67,9 +65,7 @@ namespace RIUPP.Controllers
         where Ficheiro.Id = id and Comentario.FicheiroFK = Ficheiro.Id and Utilizador.Id = Ficheiro.Dono
         */
         // GET: MinhaPagina/Details/5
-        [Authorize]
-        public async Task<IActionResult> Details(int? id)
-        {
+        public async Task<IActionResult> Details(int? id) {
             if (id == null)
             {
                 return NotFound();
@@ -94,7 +90,6 @@ namespace RIUPP.Controllers
         Retorna a View e envia todas as Áreas para a viewBag
         */
         // GET: MinhaPagina/Create
-        [Authorize]
         public IActionResult Create()
         {
             ViewData["AreaFK"] = new SelectList(_context.Areas, "Id", "Nome");
@@ -125,7 +120,7 @@ namespace RIUPP.Controllers
 
             if (fich == null) {
                 ViewData["AreaFK"] = new SelectList(_context.Areas, "Id", "Nome", ficheiro.AreaFK);
-                return View(ficheiro); 
+                return View(ficheiro);
             }
             else {
                 Guid g;
@@ -161,7 +156,6 @@ namespace RIUPP.Controllers
         where Ficheiro.Id = id
         */
         // GET: MinhaPagina/Edit/5
-        [Authorize]
         public async Task<IActionResult> Edit(int? id) {
             if (id == null) {
                 return NotFound();
@@ -190,9 +184,7 @@ namespace RIUPP.Controllers
         // Faz upload do projecto editado e muda a linha correspondente na tabela Ficheiros
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descricao,Observacao,Local,Tipo,DateUpload,Dono,AreaFK")] Ficheiro ficheiro, IFormFile fich)
-        {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descricao,Observacao,Local,Tipo,DateUpload,Dono,AreaFK")] Ficheiro ficheiro, IFormFile fich) {
             if (id != ficheiro.Id) {
                 return NotFound();
             }
@@ -284,22 +276,21 @@ namespace RIUPP.Controllers
         // POST: MinhaPagina/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id) {
             var ficheiro = await _context.Ficheiros.FindAsync(id);
             var comentarios = await _context.Comentarios.Include(c => c.Ficheiro)
                                                         .FirstOrDefaultAsync(c => c.FicheiroFK == ficheiro.Id);
             var downloads = await _context.Downloads.Include(d => d.Ficheiro)
                                                         .FirstOrDefaultAsync(d => d.FicheiroFK == ficheiro.Id);
-            if(downloads != null)_context.Downloads.Remove(downloads);
-            if (downloads != null)_context.Comentarios.Remove(comentarios);
+            if (downloads != null) _context.Downloads.Remove(downloads);
+            if (downloads != null) _context.Comentarios.Remove(comentarios);
             _context.Ficheiros.Remove(ficheiro);
             System.IO.File.Delete("./wwwroot/Documentos/" + ficheiro.Local);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FicheiroExists(int id){
+        private bool FicheiroExists(int id) {
             return _context.Ficheiros.Any(e => e.Id == id);
         }
 
@@ -332,10 +323,13 @@ namespace RIUPP.Controllers
         /* 
         Insert into Comentario values(Coment,FicheiroFK,QuemComentou,Date)
         */
-        // Cria uma nova linha de comentario em relação ao ficheiro em questao
+        /// <summary>
+        /// Cria uma nova linha de comentario em relação ao ficheiro em questao
+        /// </summary>
         [HttpPost, ActionName("Comentar")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Comentar(int fich, String comentario){
+        public async Task<IActionResult> Comentar(int fich, String comentario) {
+            if (comentario == "" || comentario == null) return Redirect("Details/" + fich);
             var user = await _userManager.GetUserAsync(User);
             var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
             Comentario coment = new Comentario
@@ -343,7 +337,8 @@ namespace RIUPP.Controllers
                 Coment = comentario,
                 FicheiroFK = fich,
                 QuemComentou = util.Id,
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                Visivel = true
             };
             _context.Comentarios.Add(coment);
             await _context.SaveChangesAsync();
@@ -361,12 +356,43 @@ namespace RIUPP.Controllers
         // GET: DownloadsPage
         //retorna todos os downloads relacionados aos ficheiros em questão
         [Authorize]
-        public async Task<IActionResult> Downloads(int? id){
+        public async Task<IActionResult> Downloads(int? id) {
             var rIUPPDB = _context.Downloads.Include(d => d.Ficheiro)
                                             .Include(d => d.Utilizador)
                                             .Where(d => d.Ficheiro.Id == id);
             return View(await rIUPPDB.ToListAsync());
         }
 
+
+        [HttpPost, ActionName("EsconderComentario")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EsconderComentario(int fich, int com) {
+            Comentario coment = await _context.Comentarios.FirstOrDefaultAsync(c => c.Id == com);
+            coment.Visivel = !coment.Visivel;
+            _context.Comentarios.Update(coment);
+            await _context.SaveChangesAsync();
+            return Redirect("Details/" + fich);
+        }
+
+        [HttpPost, ActionName("apagarComentario")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Gestor")]
+        public async Task<IActionResult> apagarComentario(int fich, int com)
+        {
+            Comentario coment = await _context.Comentarios.FirstOrDefaultAsync(c => c.Id == com);
+            _context.Comentarios.Remove(coment);
+            await _context.SaveChangesAsync();
+            return Redirect("Details/" + fich);
+        }
+
+        [HttpPost, ActionName("apagarDownload")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Funcionario,Gestor")]
+        public async Task<IActionResult> apagarDownload(int fich, int down){
+            Download downl = await _context.Downloads.FirstOrDefaultAsync(d => d.Id == down);
+            _context.Downloads.Remove(downl);
+            await _context.SaveChangesAsync();
+            return Redirect("Downloads/" + fich);
+        }
     }
 }

@@ -21,6 +21,8 @@ namespace RIUPP.Models{
         public int QuemComentou { get; set; } //O utilizador que fez o comentário
         public Utilizador Utilizador { get; set; }
 
+        public Boolean Visivel { get; set; }//caso o comentario seja improprio, o dono do projecto pode esconde-lo
+
         [Required] // Para obrigar a ser inserido o atributo
         [ForeignKey(nameof(Ficheiro))]
         public int FicheiroFK { get; set; } //O ficheiro onde foi feito o comentário

@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,8 +52,7 @@ namespace RIUPP.Controllers
         {
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id");
             ViewData["QuemComentou"] = new SelectList(_context.Utilizadores, "Id", "Id");
-            //return View();
-            return NotFound();
+            return View();
         }
 
         // POST: Comentarios/Create
@@ -67,13 +66,11 @@ namespace RIUPP.Controllers
             {
                 _context.Add(comentario);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id", comentario.FicheiroFK);
             ViewData["QuemComentou"] = new SelectList(_context.Utilizadores, "Id", "Id", comentario.QuemComentou);
-            //return View(comentario);
-            return NotFound();
+            return View(comentario);
         }
 
         // GET: Comentarios/Edit/5
@@ -91,8 +88,7 @@ namespace RIUPP.Controllers
             }
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id", comentario.FicheiroFK);
             ViewData["QuemComentou"] = new SelectList(_context.Utilizadores, "Id", "Id", comentario.QuemComentou);
-            //return View(comentario);
-            return NotFound();
+            return View(comentario);
         }
 
         // POST: Comentarios/Edit/5
@@ -130,8 +126,7 @@ namespace RIUPP.Controllers
             }
             ViewData["FicheiroFK"] = new SelectList(_context.Ficheiros, "Id", "Id", comentario.FicheiroFK);
             ViewData["QuemComentou"] = new SelectList(_context.Utilizadores, "Id", "Id", comentario.QuemComentou);
-            //return View(comentario);
-            return NotFound();
+            return View(comentario);
         }
 
         // GET: Comentarios/Delete/5
@@ -151,8 +146,7 @@ namespace RIUPP.Controllers
                 return NotFound();
             }
 
-            //return View(comentario);
-            return NotFound();
+            return View(comentario);
         }
 
         // POST: Comentarios/Delete/5
@@ -163,8 +157,7 @@ namespace RIUPP.Controllers
             var comentario = await _context.Comentarios.FindAsync(id);
             _context.Comentarios.Remove(comentario);
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return NotFound();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool ComentarioExists(int id)
@@ -173,4 +166,3 @@ namespace RIUPP.Controllers
         }
     }
 }
-*/
