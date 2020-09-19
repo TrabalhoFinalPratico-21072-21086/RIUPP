@@ -48,7 +48,7 @@ namespace RIUPP.Areas.Identity.Pages.Account.Manage{
         public class InputModel{
             [Required]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Novo email")]
             public string NewEmail { get; set; }
         }
 
@@ -66,7 +66,7 @@ namespace RIUPP.Areas.Identity.Pages.Account.Manage{
         public async Task<IActionResult> OnGetAsync(){
             var user = await _userManager.GetUserAsync(User);
             if (user == null){
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Não foi possível carregar o utilizador com o ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -76,7 +76,7 @@ namespace RIUPP.Areas.Identity.Pages.Account.Manage{
         public async Task<IActionResult> OnPostChangeEmailAsync(){
             var user = await _userManager.GetUserAsync(User);
             if (user == null){
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Não foi possível carregar o utilizador com o ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid){
@@ -107,21 +107,21 @@ namespace RIUPP.Areas.Identity.Pages.Account.Manage{
                 await _userManager.ConfirmEmailAsync(user, code);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Confirma o teu email",
+                    $"Porfavor confirma a tua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Email de confirmação enviado. Por favor verifica o teu email.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Não foi possivel alterar o teu email.";
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostSendVerificationEmailAsync(){
             var user = await _userManager.GetUserAsync(User);
             if (user == null){
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Não foi possível carregar o utilizador com o ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid){
@@ -147,10 +147,10 @@ namespace RIUPP.Areas.Identity.Pages.Account.Manage{
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Confirma o teu email",
+                $"Porfavor confirma a tua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Email de confirmação enviado. Por favor verifica o teu email.";
             return RedirectToPage();
         }
     }

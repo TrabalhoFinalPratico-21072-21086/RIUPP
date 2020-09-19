@@ -41,38 +41,40 @@
                         </p>
                     </div>
                 </form>
+
             </section>
+
         </div>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Entra Pela Escola</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            Não há serviços de autenticação externa activos. Vê <a href="https://go.microsoft.com/fwlink/?LinkID=532715">este artigo</a>
-                            para detalhes a implementar isto numa aplicação ASP:NET 
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+        <div class="col-md-8 col-md-offset-4" style="left: 150px; ">
+            <section>
+                <h4>Entra pela Escola</h4>
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
                         <div>
                             <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
+                                Não há serviços de autenticação externa activos. Vê <a href="https://go.microsoft.com/fwlink/?LinkID=532715">este artigo</a>
+                                para detalhes a implementar isto numa aplicação ASP:NET
                             </p>
                         </div>
-                    </form>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Entra utilizando conta @provider.DisplayName">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
                 }
-            }
-        </section>
+            </section>
+        </div>
     </div>
 </div>
     </div>

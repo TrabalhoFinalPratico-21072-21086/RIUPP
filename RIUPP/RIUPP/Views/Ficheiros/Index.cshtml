@@ -3,26 +3,27 @@
 @{
     ViewData["Title"] = "Index";
 }
-    <div class="container">
-        <br /><br /><br /><br /><br />
-        <h1>Ficheiros</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Título
-                    </th>
-                    <th>
-                       Descrição
-                    </th>
-                    <th>
-                       Área
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Reverse()){
+<div class="container">
+    <br /><br /><br /><br /><br />
+    <h1>Ficheiros</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Área
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reverse())
+            {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Titulo)
@@ -34,12 +35,14 @@
                         @Html.DisplayFor(modelItem => item.Area.Nome)
                     </td>
                     <td>
-                        @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario")){<a asp-action="Edit" asp-route-id="@item.Id"> Editar |</a>}
+                        @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario"))
+                        {<a asp-action="Edit" asp-route-id="@item.Id"> Editar |</a>}
                         <a asp-action="Details" asp-route-id="@item.Id">  Detalhes  </a>
-                        @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario")){<a asp-action="Delete" asp-route-id="@item.Id">| Apagar </a>}
+                        @if (User.IsInRole("Gestor") || User.IsInRole("Funcionario"))
+                        {<a asp-action="Delete" asp-route-id="@item.Id">| Apagar </a>}
                     </td>
                 </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+</div>

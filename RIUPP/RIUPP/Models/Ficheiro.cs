@@ -7,29 +7,65 @@ using System.Threading.Tasks;
 
 namespace RIUPP.Models{
     public class Ficheiro{
+
+        /// <summary>
+        /// Id do respetivo ficheiro (PK).
+        /// </summary>
         [Key]
         public int Id { get; set; }
-        [Required]// Para obrigar a ser inserido o atributo
-        [StringLength(50)] //Limitar a 50 caracteres
-        public String Titulo { get; set; }//Nome do ficheiro
-        [Required]// Para obrigar a ser inserido o atributo
-        public String Descricao { get; set; }//Pequena descriçao do ficheiro
-        public String Observacao { get; set; }// Caso o utilizador que carregou este ficheiro queira dizer algo em especial
-        public String Local { get; set; }// sitio onde o ficheiro esta guardado(directoria)
-        [Required]// Para obrigar a ser inserido o atributo
-        public DateTime DateUpload { get; set; }//Data em que foi feito o upload
 
-        [Required]// Para obrigar a ser inserido o atributo
+
+        /// <summary>
+        /// Titulo do ficheiro com limite de 50 caracteres (obrigatório).
+        /// </summary>
+        [Required]
+        [StringLength(50)]
+        public String Titulo { get; set; }
+
+        /// <summary>
+        /// Descrição do ficheiro (obrigatório).
+        /// </summary>
+        [Required]
+        public String Descricao { get; set; }
+
+        /// <summary>
+        /// Observações do ficheiro.
+        /// </summary>
+        public String Observacao { get; set; }
+
+        /// <summary>
+        /// Local onde o ficheiro foi guardado, a sua directoria.
+        /// </summary>
+        public String Local { get; set; }
+
+        /// <summary>
+        /// Data em que foi feito o upload (obrigatório).
+        /// </summary>
+        [Required]
+        public DateTime DateUpload { get; set; }
+
+
+        /// <summary>
+        /// Quem fez o upload do projecto (obrigatório) (FK para Utilizador).
+        /// </summary>
+        [Required]
         [ForeignKey(nameof(Utilizador))]
-        public int Dono { get; set; } //Quem fez o upload do projecto
+        public int Dono { get; set; }
         public Utilizador Utilizador { get; set; }
 
-        [Required] // Para obrigar a ser inserido o atributo
+
+        /// <summary>
+        /// A que Área pertence o projecto (obrigatório) (FK para Area).
+        /// </summary>
+        [Required]
         [ForeignKey(nameof(Area))]
-        public int AreaFK { get; set; } // A que Área pertence o projecto
+        public int AreaFK { get; set; }
         public Area Area { get; set; } 
 
-        // Listas que contêm todos os download e comentários associados ao ficheiro em questão
+
+        /// <summary>
+        /// Listas que contêm todos os download e comentários associados ao ficheiro em questão
+        /// </summary>
         public virtual ICollection<Download> Download { get; set; }
         public virtual ICollection<Comentario> Comentario { get; set; }
         // Construtor

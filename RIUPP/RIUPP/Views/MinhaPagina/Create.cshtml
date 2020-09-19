@@ -3,62 +3,68 @@
 @{
     ViewData["Title"] = "Create";
 }
-    <div class="container">
-        <br /><br /><br /><br /><br />
-        <h1>Criar um novo ficheiro</h1>
+<div class="container">
+    <br /><br /><br /><br />
+    @{if (ViewBag.bad != null)
+        {
+            if (ViewBag.bad == "erro")
+            {
+                <div class="alert alert-danger" role="alert">
+                    Parece que algo correu mal a guardar o ficheiro, verifica se está tudo bem
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    Tem de selecionar um ficheiro para ser carregado
+                </div>
+            }
+        }
+        <br />
+    }
+    <h1>Criar um novo ficheiro</h1>
 
-        <h4>Ficheiro</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <form asp-action="Create" enctype="multipart/form-data" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Titulo" class="control-label"></label>
-                        <input asp-for="Titulo" class="form-control" />
-                        <span asp-validation-for="Titulo" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Descricao" class="control-label"></label>
-                        <input asp-for="Descricao" class="form-control" />
-                        <span asp-validation-for="Descricao" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Observacao" class="control-label"></label>
-                        <input asp-for="Observacao" class="form-control" />
-                        <span asp-validation-for="Observacao" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="AreaFK" class="control-label">Area</label>
-                        <select asp-for="AreaFK" class="form-control" asp-items="ViewBag.AreaFK"></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Local" class="control-label"></label>
-                        <input type="file" name="fich" style="color:blue;" />
-                        <span asp-validation-for="Local" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Carregar" class="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div>
-            <a asp-action="Index">Voltar</a>
+    <h4>Ficheiro</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Titulo" class="control-label"></label>
+                    <input asp-for="Titulo" class="form-control" />
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descricao" class="control-label"></label>
+                    <input asp-for="Descricao" class="form-control" />
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Observacao" class="control-label"></label>
+                    <input asp-for="Observacao" class="form-control" />
+                    <span asp-validation-for="Observacao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AreaFK" class="control-label">Area</label>
+                    <select asp-for="AreaFK" class="form-control" asp-items="ViewBag.AreaFK"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Local" class="control-label"></label>
+                    <input type="file" name="fich" style="color:blue;" />
+                    <span asp-validation-for="Local" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Carregar" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
     </div>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
 
-@*
-Titulo+
-Descricao+
-Observacao+
-Local-
-Tipo+
-DateUpload-
-Dono-
-AreaFk+
-*@
+    <div>
+        <a asp-action="Index">Voltar</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

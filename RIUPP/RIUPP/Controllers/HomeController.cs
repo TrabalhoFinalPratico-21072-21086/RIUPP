@@ -12,9 +12,14 @@ using RIUPP.Models;
 
 namespace RIUPP.Controllers{
     public class HomeController : Controller{
-
         private readonly ILogger<HomeController> _logger;
+
+
+        /// <summary>
+        /// Variável que identifica, dentro da base de dados a parte do utilizador.
+        /// </summary>
         private readonly UserManager<IdentityUser> _userManager;
+
         /// <summary>
         /// Variável que identifica a Base de dados do projecto
         /// </summary>
@@ -26,28 +31,16 @@ namespace RIUPP.Controllers{
             _logger = logger;
             _userManager = userManager;
         }
-        // Retorna a vista inicial do Home
+
+        /// <summary>
+        /// Retorna a vista inicial do Home
+        /// </summary>
         public async Task<IActionResult> IndexAsync(){
-            if (User.Identity.IsAuthenticated)
-            {
+            if (User.Identity.IsAuthenticated) {
                 var user = await _userManager.GetUserAsync(User);
-                Utilizador util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
-                if (util == null)
-                {
-                    util = new Utilizador
-                    {
-                        Nome = user.UserName.Substring(0, user.UserName.IndexOf("@")),
-                        Email = user.Email,
-                        Aut = user.Id
-                    };
-
-                    await _userManager.AddToRoleAsync(user, "Anonimo");
-
-                    _context.Utilizadores.Add(util);
-                    await _context.SaveChangesAsync();
-                }
+                var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+                if (util.Suspenso) return View("Suspenso");
             }
-            return View(await _context.Ficheiros.ToListAsync());
             return View(await _context.Ficheiros.ToListAsync());
         }
 

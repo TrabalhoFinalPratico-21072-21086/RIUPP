@@ -3,30 +3,33 @@
 @{
     ViewData["Title"] = "Registar";
 }
+    <div class="container">
+        <br /><br /><br /><br /><br />
 
-<h1>@ViewData["Title"]</h1>
-<h4 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h4>
-<hr />
 
-<p id="external-login-description" class="text-info">
-    Autenticaste com sucesso com <strong>@Model.ProviderDisplayName</strong>.
-    Por favor coloca um email para o site abaixo e clina no buttao registar para acabar o login
-</p>
+        <h1>@ViewData["Title"]</h1>
+        <h4 id="external-login-title">Associa a tua @Model.ProviderDisplayName conta.</h4>
+        <hr />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <p id="external-login-description" class="text-info">
+            Autenticação feita com sucesso com <strong>@Model.ProviderDisplayName</strong>.
+            Por favor coloca um email para o website abaixo e clica no botão registar para terminar o login
+        </p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registar</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary">Registar</button>
-        </form>
+        </div>
     </div>
-</div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

@@ -36,14 +36,14 @@ namespace RIUPP.Areas.Identity.Pages.Account
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Não foi possivel carregar o utilizador com o ID '{userId}'.");
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
             {
-                StatusMessage = "Error changing email.";
+                StatusMessage = "Erro a alterar o email.";
                 return Page();
             }
 
@@ -51,12 +51,12 @@ namespace RIUPP.Areas.Identity.Pages.Account
             // we need to update the user name.
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
             if (!setUserNameResult.Succeeded){
-                StatusMessage = "Error changing user name.";
+                StatusMessage = "Erro a alterar o  user name.";
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Thank you for confirming your email change.";
+            StatusMessage = "Obrigado por confirmar a sua mudança de email.";
             return Page();
         }
     }

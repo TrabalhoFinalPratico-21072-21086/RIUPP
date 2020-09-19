@@ -16,15 +16,17 @@ namespace RIUPP.Controllers{
     public class FicheirosController : Controller{
 
         /// <summary>
-        /// Variável que identifica a Base de dados do projecto
+        /// Variável que identifica a Base de dados do projecto.
         /// </summary>
         private readonly RIUPPDB _context;
+
         /// <summary>
-        /// Variável que identifica, dentro da base de dados a parte do utilizador
+        /// Variável que identifica, dentro da base de dados a parte do utilizador.
         /// </summary>
         private readonly UserManager<IdentityUser> _userManager;
+
         /// <summary>
-        /// Variável que contém os dados do servidor, em particular onde estão estes ficheiros guardados, no disco rigido do servidor
+        /// Variável que contém os dados do servidor, em particular onde estão estes ficheiros guardados, no disco rigido do servidor.
         /// </summary>
         private readonly IWebHostEnvironment _caminho;
 
@@ -36,23 +38,37 @@ namespace RIUPP.Controllers{
             _caminho = caminho;
         }
 
-        //Select * from Ficheiros
-        // GET: Ficheiros
-        public async Task<IActionResult> Index()
-        {
+
+        /// <summary>
+        /// Select * from Ficheiros
+        /// GET: Ficheiros
+        /// </summary>
+        public async Task<IActionResult> Index(){
+            if (User.Identity.IsAuthenticated){
+                //verifica se o user tem a conta suspensa
+                var user = await _userManager.GetUserAsync(User);
+                var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+                if (util.Suspenso) return View("Suspenso");
+            }
             var rIUPPDB = _context.Ficheiros.Include(f => f.Area).Include(f => f.Utilizador);
             return View(await rIUPPDB.ToListAsync());
         }
 
-        /* 
-         Update Ficheiro, Area, Comentario, Utilizador set 
-         Muda o que quiser entre o nome do ficheiro, descrição...
-         where Ficheiro.Id = id and Ficheiro.AreaFK = Area.Id and Ficheiro.Dono = Utilizador.Id and Ficheiro.Id = Comentario.FicheiroFK
-        */
-        //GET: Ficheiros/Details/5
+        /*
+         *  Update Ficheiro, Area, Comentario, Utilizador set 
+         *  where Ficheiro.Id = id and Ficheiro.AreaFK = Area.Id and Ficheiro.Dono = Utilizador.Id and Ficheiro.Id = Comentario.FicheiroFK
+         */
+        /// <summary>
+        /// Muda o que quiser entre o nome do ficheiro, descrição...
+        /// GET: Ficheiros/Details/5
+        /// </summary>
         [Authorize]
-        public async Task<IActionResult> Details(int? id) 
-        {
+        public async Task<IActionResult> Details(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id == null) {
                 return NotFound();
             }
@@ -70,11 +86,18 @@ namespace RIUPP.Controllers{
             return View(ficheiro);
         }
 
-        // GET: Ficheiros/Edit/5
+
+        /// <summary>
+        /// GET: Ficheiros/Edit/5
+        /// </summary>
         [Authorize]
         [Authorize(Roles = "Gestor,Funcionario")]
-        public async Task<IActionResult> Edit(int? id)
-        {
+        public async Task<IActionResult> Edit(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id == null)
             {
                 return NotFound();
@@ -90,14 +113,22 @@ namespace RIUPP.Controllers{
             return View(ficheiro);
         }
 
-        // POST: Ficheiros/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+         * To protect from overposting attacks, enable the specific properties you want to bind to, for more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+         */
+        /// <summary>
+        /// POST: Ficheiros/Edit/5
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
         [Authorize(Roles = "Gestor,Funcionario")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Descricao,Observacao,Dono,Local,DateUpload,AreaFK")] Ficheiro ficheiro){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id != ficheiro.Id){
                 return NotFound();
             }
@@ -122,11 +153,18 @@ namespace RIUPP.Controllers{
             return View(ficheiro);
         }
 
-        // GET: Ficheiros/Delete/5
+
+        /// <summary>
+        /// GET: Ficheiros/Delete/5
+        /// </summary>
         [Authorize]
         [Authorize(Roles = "Gestor,Funcionario")]
-        public async Task<IActionResult> Delete(int? id)
-        {
+        public async Task<IActionResult> Delete(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id == null)
             {
                 return NotFound();
@@ -144,13 +182,20 @@ namespace RIUPP.Controllers{
             return View(ficheiro);
         }
 
-        // POST: Ficheiros/Delete/5
+
+        /// <summary>
+        /// POST: Ficheiros/Delete/5
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
         [Authorize(Roles = "Gestor,Funcionario")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             var ficheiro = await _context.Ficheiros.FindAsync(id);
             var comentarios = await _context.Comentarios.Include(c => c.Ficheiro)
                                                         .FirstOrDefaultAsync(c => c.FicheiroFK == ficheiro.Id);
@@ -170,15 +215,17 @@ namespace RIUPP.Controllers{
         }
 
 
-        /* 
-        Insert into Download values (Data,FicheiroFK,Utilizador)
-        */
-        //retorna o ficheiro para download, adicionando a tabela corrospondida o mesmo acontecimento
-        //https://stackoverflow.com/questions/3604562/download-file-of-any-type-in-asp-net-mvc-using-fileresult
+        /*
+         * Insert into Download values (Data,FicheiroFK,Utilizador)
+         * https://stackoverflow.com/questions/3604562/download-file-of-any-type-in-asp-net-mvc-using-fileresult
+         */
+        /// <summary>
+        /// retorna o ficheiro para download, adicionando a tabela corrospondida o mesmo acontecimento.
+        /// </summary>
         [HttpPost, ActionName("Download")]
         [ValidateAntiForgeryToken]
-        public async Task<FileResult> Download(String down, int fich)
-        {
+        [Authorize]
+        public async Task<FileResult> Download(String down, int fich){
             var user = await _userManager.GetUserAsync(User);
             var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
             Download downl = new Download()
@@ -194,20 +241,23 @@ namespace RIUPP.Controllers{
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, down);
         }
 
-
-        /* 
-        Insert into Comentario values(Coment,FicheiroFK,QuemComentou,Date)
-        */
+        /*
+         * Insert into Comentario values(Coment,FicheiroFK,QuemComentou,Date)
+         */
         /// <summary>
         /// Cria uma nova linha de comentario em relação ao ficheiro em questao
         /// </summary>
         [HttpPost, ActionName("Comentar")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Comentar(int fich, String comentario)
-        {
+        [Authorize]
+        public async Task<IActionResult> Comentar(int fich, String comentario){
+            //se o comentario for null ou string vazia, não guarda e retorna para a pagina do ficheiro que comentou
             if (comentario == "" || comentario == null) return Redirect("Details/" + fich);
+            //Caso o user estiver suspenso retorna para a pagina de suspenso
             var user = await _userManager.GetUserAsync(User);
             var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+            //Cria um comentario
             Comentario coment = new Comentario
             {
                 Coment = comentario,
@@ -216,6 +266,7 @@ namespace RIUPP.Controllers{
                 Date = DateTime.Now,
                 Visivel = true
             };
+            //guarda na base de dados esse comentario
             _context.Comentarios.Add(coment);
             await _context.SaveChangesAsync();
 
@@ -223,29 +274,40 @@ namespace RIUPP.Controllers{
         }
 
 
-
-        /* 
-        Select *
-        From Ficheiros,Download
-        Where Download.FicheiroFK = Ficheiro.id and Ficheiro.Id = id
-        */
-        // GET: DownloadsPage
-        //retorna todos os downloads relacionados aos ficheiros em questão
+        /*
+         * Select *
+         * From Ficheiros,Download
+         * Where Download.FicheiroFK = Ficheiro.id and Ficheiro.Id = id
+         */
+        /// <summary>
+        /// GET: DownloadsPage
+        /// Retorna todos os downloads relacionados aos ficheiros em questão
+        /// </summary>
         [Authorize(Roles = "Gestor,Funcionario")]
-        public async Task<IActionResult> Downloads(int? id)
-        {
+        public async Task<IActionResult> Downloads(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             var rIUPPDB = _context.Downloads.Include(d => d.Ficheiro)
                                             .Include(d => d.Utilizador)
                                             .Where(d => d.Ficheiro.Id == id);
             return View(await rIUPPDB.ToListAsync());
         }
 
-
+        /// <summary>
+        ///  POST: MinhaPagina/Details/5
+        ///  Esconde um comentario, ou seja, outras pessoas a não ser o dono do project nao vao poder ver este comentario
+        /// </summary>
         [HttpPost, ActionName("EsconderComentario")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Gestor,Funcionario")]
         public async Task<IActionResult> EsconderComentario(int fich, int com)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
             Comentario coment = await _context.Comentarios.FirstOrDefaultAsync(c => c.Id == com);
             coment.Visivel = !coment.Visivel;
             _context.Comentarios.Update(coment);
@@ -253,6 +315,11 @@ namespace RIUPP.Controllers{
             return Redirect("Details/" + fich);
         }
 
+
+        /// <summary>
+        ///  POST: MinhaPagina/Details/5
+        ///  Apaga o comentario passado por parametro(int com)
+        /// </summary>
         [HttpPost, ActionName("apagarComentario")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Gestor,Funcionario")]
@@ -263,10 +330,18 @@ namespace RIUPP.Controllers{
             return Redirect("Details/" + fich);
         }
 
+
+        /// <summary>
+        ///  POST: MinhaPagina/Downloads/5
+        ///  Apaga a entrada de download que alguem fez no ficheiro em questão
+        /// </summary>
         [HttpPost, ActionName("apagarDownload")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Gestor,Funcionario")]
         public async Task<IActionResult> apagarDownload(int fich, int down){
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
             Download downl = await _context.Downloads.FirstOrDefaultAsync(d => d.Id == down);
             _context.Downloads.Remove(downl);
             await _context.SaveChangesAsync();

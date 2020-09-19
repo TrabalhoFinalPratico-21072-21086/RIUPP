@@ -8,24 +8,47 @@ using System.Threading.Tasks;
 namespace RIUPP.Models{
     public class Comentario{
 
+        /// <summary>
+        /// Id do respetivo comentário (PK).
+        /// </summary>
         [Key]
         public int Id { get; set; }
-        [Required] // Para obrigar a ser inserido o atributo
-        [StringLength(100)]//Limitar o tamanho máximo do Comentário
-        public String Coment { get; set; } //Conteudo do comentário
-        [Required] // Para obrigar a ser inserido o atributo
-        public DateTime Date { get; set; } //Quando foi feito o comentário
 
-        [Required] // Para obrigar a ser inserido o atributo
+        /// <summary>
+        /// Comentário obrigatório, em formato string, com tamanho máximo de 100caracteres.
+        /// </summary>
+        [Required]
+        [StringLength(100)]
+        public String Coment { get; set; }
+
+        /// <summary>
+        /// Data do comentário obrigatória para saber quando o comentário foi feito.
+        /// </summary>
+        [Required]
+        public DateTime Date { get; set; }
+
+
+        
+        [Required]
         [ForeignKey(nameof(Utilizador))]
-        public int QuemComentou { get; set; } //O utilizador que fez o comentário
+        
+        /// <summary>
+        /// Utilizador que fez o comentário em questão (FK para Utilizador).
+        /// </summary>
+        public int QuemComentou { get; set; }
         public Utilizador Utilizador { get; set; }
 
-        public Boolean Visivel { get; set; }//caso o comentario seja improprio, o dono do projecto pode esconde-lo
-
-        [Required] // Para obrigar a ser inserido o atributo
+        /// <summary>
+        /// Para possibilitar o dono do projecto a esconder comentários.
+        /// </summary>
+        public Boolean Visivel { get; set; }
+        
+        /// <summary>
+        /// O ficheiro onde foi feito o comentário (obrigatório) (FK para Ficheiro).
+        /// </summary>
+        [Required]
         [ForeignKey(nameof(Ficheiro))]
-        public int FicheiroFK { get; set; } //O ficheiro onde foi feito o comentário
+        public int FicheiroFK { get; set; }
         public Ficheiro Ficheiro { get; set; }
         
     }

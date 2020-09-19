@@ -31,11 +31,18 @@ namespace RIUPP.Controllers{
          Select * 
          from Utilizadores
         */
-        // GET: Utilizadores
+        /// <summary>
+        /// GET: Utilizadores
+        /// </summary>
         [Authorize]
         public async Task<IActionResult> Index(){
-            var util =  _context.Utilizadores.Include(f => f.Ficheiro).OrderByDescending(f => f.Ficheiro.Count);
-            return View(await util.ToListAsync());
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
+            var utili =  _context.Utilizadores.Include(f => f.Ficheiro).OrderByDescending(f => f.Ficheiro.Count);
+            return View(await utili.ToListAsync());
         }
 
         /* 
@@ -43,9 +50,16 @@ namespace RIUPP.Controllers{
          from Utilizadores
          where Utilizador.Id = id;
         */
-        // GET: Utilizadores/Details/5
+        /// <summary>
+        /// GET: Utilizadores/Details/5
+        /// </summary>
         [Authorize]
         public async Task<IActionResult> Details(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id == null){
                 return NotFound();
             }
@@ -62,31 +76,17 @@ namespace RIUPP.Controllers{
 
             return View(utilizador);
         }
-        
-        // GET: Utilizadores/Create
-        [Authorize]
-        public IActionResult Create(){
-            return View();
-        }
 
-        // POST: Utilizadores/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email")] Utilizador utilizador){
-            if (ModelState.IsValid){
-                _context.Add(utilizador);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            //return View(utilizador);
-            return NotFound();
-        }
-
-        // GET: Utilizadores/Edit/5
+        /// <summary>
+        /// GET: Utilizadores/Edit/5
+        /// </summary>
         [Authorize]
         public async Task<IActionResult> Edit(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id == null){
                 return NotFound();
             }
@@ -98,14 +98,21 @@ namespace RIUPP.Controllers{
             return View(utilizador);
         }
 
-        // POST: Utilizadores/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*
+         * To protect from overposting attacks, enable the specific properties you want to bind to, for more details, see http://go.microsoft.com/fwlink/?LinkId=317598. 
+         */
+        /// <summary>
+        /// POST: Utilizadores/Edit/5
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email")] Utilizador utilizador)
-        {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email")] Utilizador utilizador){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id != utilizador.Id)
             {
                 return NotFound();
@@ -134,10 +141,17 @@ namespace RIUPP.Controllers{
             return View(utilizador);
         }
 
-        // GET: Utilizadores/Delete/5
+
+        /// <summary>
+        /// GET: Utilizadores/Delete/5
+        /// </summary>
         [Authorize]
-        public async Task<IActionResult> Delete(int? id)
-        {
+        public async Task<IActionResult> Delete(int? id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             if (id == null)
             {
                 return NotFound();
@@ -153,13 +167,21 @@ namespace RIUPP.Controllers{
             return View(utilizador);
         }
 
-        // POST: Utilizadores/Delete/5
+
+        /// <summary>
+        /// POST: Utilizadores/Delete/5
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (util.Suspenso) return View("Suspenso");
+
             var utilizador = await _context.Utilizadores.FindAsync(id);
+            if (utilizador == null) return NotFound();
             _context.Utilizadores.Remove(utilizador);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -170,33 +192,74 @@ namespace RIUPP.Controllers{
             return _context.Utilizadores.Any(e => e.Id == id);
         }
 
-        [HttpPost, ActionName("mudarCargo")]
+
+        /// <summary>
+        /// GET: Utilizadores/Details/5
+        /// Muda  o cargo a um utilizador
+        /// </summary>
+        [HttpPost, ActionName("MudarCargo")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Gestor")]
-        public async Task<IActionResult> mudarCargo(int idUtil, String crg){
+        public async Task<IActionResult> MudarCargo(int idUtil, String crg){
+            //verifica se o user tem a conta suspensa
+            var useri = await _userManager.GetUserAsync(User);
+            var utili = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == useri.Id);
+            if (utili.Suspenso) return View("Suspenso");
+            //descobre o user e o role do utilizador em questão
             Utilizador util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == idUtil);
+            if (util == null) return NotFound();
             var role = await _context.UserRoles.FirstOrDefaultAsync(r => r.UserId == util.Aut);
             var user = await _userManager.FindByIdAsync(util.Aut);
+
+            //se for para subir o cargo mas o utilizador em questão ja for o cargo maximo, não acontece nada, se não, sobe um patamar(Anonimo,Funcionario, Gestor)
             if (crg == "sobe"){
+                //sobe para funcionario
                 if(role.RoleId == "3"){
                     await _userManager.RemoveFromRoleAsync(user, "Anonimo");
                     await _userManager.AddToRoleAsync(user, "Funcionario");
                 }
+                //sobe para gestor
                 else if(role.RoleId == "2"){
                     await _userManager.RemoveFromRoleAsync(user, "Funcionario");
                     await _userManager.AddToRoleAsync(user, "Gestor");
                 }
             }
-            else{
+            //se for para descer o cargo mas o utilizador em questão ja for o cargo minimo, não acontece nada, se não, desce um patamar(Anonimo,Funcionario, Gestor)
+            else
+            {
+                //desce para anonimo
                 if (role.RoleId == "2"){
                     await _userManager.RemoveFromRoleAsync(user, "Funcionario");
                     await _userManager.AddToRoleAsync(user, "Anonimo");
                 }
+                //desce para funcionario
                 else if (role.RoleId == "1"){
                     await _userManager.RemoveFromRoleAsync(user, "Gestor");
                     await _userManager.AddToRoleAsync(user, "Funcionario");
                 }
             }
+            return Redirect("Details/" + idUtil);
+        }
+
+
+        /// <summary>
+        /// GET: Utilizadores/Details/5
+        /// suspende ou activa a conta a um utilizador
+        /// </summary>
+        [HttpPost, ActionName("Suspensao")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Gestor")]
+        public async Task<IActionResult> Suspensao(int idUtil, string sus){
+            //verifica se o user tem a conta suspensa
+            var user = await _userManager.GetUserAsync(User);
+            var utili = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Aut == user.Id);
+            if (utili.Suspenso) return View("Suspenso");
+            Utilizador util = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == idUtil);
+            if (util == null) return NotFound();
+            if (sus == "activa") util.Suspenso = false;
+            else util.Suspenso = true;
+            _context.Update(util);
+            await _context.SaveChangesAsync();
             return Redirect("Details/" + idUtil);
         }
     }

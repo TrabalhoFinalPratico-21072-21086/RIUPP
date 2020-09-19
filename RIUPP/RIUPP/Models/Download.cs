@@ -7,19 +7,35 @@ using System.Threading.Tasks;
 
 namespace RIUPP.Models{
     public class Download{
+
+        /// <summary>
+        /// Id do download (PK).
+        /// </summary>
         [Key]
         public int Id { get; set; }
-        [Required]// Para obrigar a ser inserido o atributo
-        public DateTime Data { get; set; } //Data em que foi feita o download
 
-        [Required]// Para obrigar a ser inserido o atributo
+        /// <summary>
+        /// Data do download (obrigatório).
+        /// </summary>
+        [Required]
+        public DateTime Data { get; set; }
+
+
+        /// <summary>
+        /// Qual o ficheiro do qual foi feito download (obrigatório)(FK para Ficheiro).
+        /// </summary>
+        [Required]
         [ForeignKey(nameof(Ficheiro))]
-        public int FicheiroFK { get; set; } //Qual o ficheiro que foi feito download
+        public int FicheiroFK { get; set; }
         public Ficheiro Ficheiro { get; set; }
 
-        [Required]// Para obrigar a ser inserido o atributo
+
+        /// <summary>
+        /// Quem fez o download do ficheiro (obrigatório)(FK para Utilizador).
+        /// </summary>
+        [Required]
         [ForeignKey(nameof(Utilizador))]
-        public int UtilizadorFK { get; set; } //Quem fez o download do ficheiro
+        public int UtilizadorFK { get; set; }
         public Utilizador Utilizador { get; set; }
 
     }

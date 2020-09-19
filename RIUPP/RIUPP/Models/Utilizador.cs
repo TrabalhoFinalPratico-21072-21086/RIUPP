@@ -8,13 +8,35 @@ using System.Threading.Tasks;
 
 namespace RIUPP.Models{
     public class Utilizador{
+
+        /// <summary>
+        /// Id do respetivo Utilizador (PK).
+        /// </summary>
         [Key]
         public int Id { get; set; }
-        [Required] // Para obrigar a ser inserido o atributo
-        public String Nome { get; set; }//Nome do utilizador
-        public String Email { get; set; }//Email do utilizador
-        [Required] // Para obrigar a ser inserido o atributo
-        public String Aut { get; set; }//Chave de autentiticação
+
+        /// <summary>
+        /// Nome do utilizador(Obrigatório).
+        /// </summary>
+        [Required]
+        public String Nome { get; set; }
+
+        /// <summary>
+        /// Email do utilizador.
+        /// </summary>
+        public String Email { get; set; }
+
+        /// <summary>
+        /// Chave de autentiticação do utilizador(Obrigatório).
+        /// </summary>
+        [Required]
+        public String Aut { get; set; }
+
+        /// <summary>
+        /// Para saber se a conta do respectivo utilizador esta suspensa ou nao
+        /// </summary>
+        [Required]
+        public Boolean Suspenso { get; set; }
 
         // Listas com os Downloads, Ficheiros e Comentários associados a cada Utilizador
         public virtual ICollection<Download> Download { get; set; }

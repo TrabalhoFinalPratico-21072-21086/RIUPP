@@ -1,0 +1,11 @@
+--salas da bruxa--
+30,33,40,50,57,24,26,39,68,67,72,79
+general 3 em 3horas
+bruxa de 8 em 8horas
+
+--Cofres de madeira podre--
+javali -> metin da montanha
+tigre -> metin da solidão
+leao -> metin da arrogância
+lobo -> metin da vingança
+

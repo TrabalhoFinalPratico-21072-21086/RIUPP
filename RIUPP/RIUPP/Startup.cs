@@ -35,10 +35,9 @@ namespace RIUPP
                 .AddEntityFrameworkStores<RIUPPDB>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
-            {
-                microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
-                microsoftOptions.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
+            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>{
+                microsoftOptions.ClientId = "525f669a-c51e-460e-9c43-4867dd5b1cfa";//Configuration["Authentication:Microsoft:ClientId"];
+                microsoftOptions.ClientSecret = "-_-azq~z-F7c3uDQ7M7ndwBeS56N5v~0Ek";// Configuration["Authentication:Microsoft:ClientSecret"];
             });
         }
 
